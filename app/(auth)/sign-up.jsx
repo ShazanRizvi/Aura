@@ -1,13 +1,15 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
+import GlobalContext from '../../context/GlobalProvider'
 
 const SignUp = () => {
+  const {setUser, setIsLoggedIn}=useContext(GlobalContext)
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -21,6 +23,9 @@ const SignUp = () => {
       Alert.alert("Error", "Please fill all fields");
     try {
       const user = await createUser(form.email, form.password, form.username);
+      setUser(user)
+      setIsLoggedIn(true);
+
       router.replace("/home");
       return user;
     } catch (error) {

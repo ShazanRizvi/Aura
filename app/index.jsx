@@ -1,14 +1,20 @@
 import { Text, View, ScrollView, Image } from "react-native";
 import { Link, SplashScreen, router, Redirect } from "expo-router";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants";
 import Button from "../components/Button";
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from "expo-status-bar";
+import GlobalContext from "@/context/GlobalProvider";
 
 SplashScreen.preventAutoHideAsync();
 export default function Index() {
+  const { isLoggedIn, isLoading, user } = useContext(GlobalContext);
+  //console.log(isLoggedIn, isLoading,user)
+
+  if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
+
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -21,7 +27,7 @@ export default function Index() {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
   useEffect(() => {
-    if (fontsLoaded||error) {
+    if (fontsLoaded || error) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, error]);
@@ -30,7 +36,7 @@ export default function Index() {
   }
   return (
     <SafeAreaView className="bg-primary max-h-[100vh]">
-      <ScrollView ContentContainerStyle={{ height: '100vh' }}>
+      <ScrollView ContentContainerStyle={{ height: "100vh" }}>
         <View className="w-full  items-center h-full px-3">
           <Image
             className="w-[120px] h-[84px]"
@@ -54,7 +60,12 @@ export default function Index() {
               exploration
             </Text>
             <View className="mt-10 w-full">
-              <Button btnText="Continue with Email" containerStyles="w-full mt-7" textStyles="" handlePress={()=>router.push('/sign-up')}  />
+              <Button
+                btnText="Continue with Email"
+                containerStyles="w-full mt-7"
+                textStyles=""
+                handlePress={() => router.push("/sign-in")}
+              />
             </View>
           </View>
         </View>
