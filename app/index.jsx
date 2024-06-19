@@ -7,7 +7,7 @@ import { images } from "../constants";
 import Button from "../components/Button";
 import { StatusBar } from 'expo-status-bar'
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 export default function Index() {
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
@@ -21,16 +21,16 @@ export default function Index() {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
   useEffect(() => {
-    if (error) {
-      throw error;
-    }
-    if (!fontsLoaded) {
-      SplashScreen.preventAutoHideAsync();
+    if (fontsLoaded||error) {
+      SplashScreen.hideAsync();
     }
   }, [fontsLoaded, error]);
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <ScrollView ContentContainerStyle={{ height: "100%" }}>
+    <SafeAreaView className="bg-primary max-h-[100vh]">
+      <ScrollView ContentContainerStyle={{ height: '100vh' }}>
         <View className="w-full  items-center h-full px-3">
           <Image
             className="w-[120px] h-[84px]"
