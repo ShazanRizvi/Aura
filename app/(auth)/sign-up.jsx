@@ -14,12 +14,6 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const handleInputChange = (name, value) => {
-    setForm(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
  
 
   const handleSubmit = async () => {
